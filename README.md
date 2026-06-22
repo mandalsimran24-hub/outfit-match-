@@ -1,37 +1,42 @@
-# Outfit Match
+# Atelier Wardrobe — Outfit Match
 
-A small web app that helps you decide what to wear. Add your wardrobe — tops, bottoms, dresses, shoes, bags, accessories — pick the occasion, and it suggests outfit combinations ranked by color pairing and how well each piece suits the event.
+**Live demo:** https://atelierwardrobe.example.com (GitHub Pages: https://mandalsimran24-hub.github.io/outfit-match-/)
 
-No backend, no build step, no dependencies. It's a single HTML file that runs entirely in the browser.
+Atelier Wardrobe is a single-file browser app that helps you decide what to wear. Add items to your wardrobe — tops, bottoms, dresses, shoes, bags and accessories — optionally include a photo, pick the occasion, and the app ranks outfit combinations by color pairing, occasion fit and today's weather.
 
-## Why I built this
+This repo contains a lightweight, dependency-free HTML file (index.html) that runs entirely in the browser — no backend, no build step, and no external dependencies required.
 
-I wanted a portfolio project that solved a problem I actually have — figuring out what goes with what every morning — rather than a generic todo-list clone. Building something I'd genuinely use made it easier to think through edge cases (what happens with an empty wardrobe, what counts as a "neutral" color, how gym clothes should be scored differently from formal wear) instead of just filling in a template.
+Why this looks like a small clothing site
 
-## How it works
+- The interface is intentionally styled to feel like a boutique clothing landing page so it can be used as a portfolio piece for UI work as well as a practical tool.
+- The app demonstrates UI, accessibility-friendly controls, client-side image handling, simple color theory, and a straightforward algorithm for scoring outfits.
 
-- **Wardrobe:** items are stored with a name, category, and color, and saved to the browser's local storage so they persist between visits.
-- **Color matching:** each item's hex color is converted to HSL, and pairs of items are scored using basic color theory — analogous hues (close together on the color wheel) and complementary hues (opposite each other) score well, while colors in between score lower. Low-saturation or very light/dark colors are treated as neutrals that pair with anything, which is roughly how people actually think about black, white, navy, and beige.
-- **Event fit:** each category (top, dress, shoes, etc.) has a suitability weight per event type — for example, dresses are weighted low for the gym, gym shoes are weighted low for a wedding. This filters out combinations that wouldn't make sense before scoring is even applied.
-- **Outfit generation:** the app builds candidate outfits two ways — dress-based (dress + best-matching shoes/bag/accessory) and separates-based (top + bottom + best-matching outerwear/shoes/bag/accessory) — scores each by a blend of color match (60%) and event fit (40%), then shows the top results.
+What you'll find here
 
-## Tools used
+- index.html — the landing page and entry point for demo users.
+- app.html — the single-file app users can open to manage a wardrobe and get outfit suggestions.
 
-- **Claude** (Claude.ai) — used to think through the scoring approach, write the HTML/CSS/JS, and review the result. I worked through this conversationally: described what I wanted, reviewed what was built, and asked for changes (e.g. the event-based filtering, the local storage persistence).
-- No frameworks, no build tools — plain HTML, CSS, and JavaScript so it's easy to read top to bottom.
+Design & behavior notes
 
-## Running it
+- Photo uploads are compressed client-side to avoid filling localStorage with full-resolution images (images are resized to a 160px max dimension, saved as JPEG at 70% quality).
+- Color matching converts colors to HSL and uses a simplified mix of analogous and complementary scoring; low-saturation / extreme lightness values are treated as neutrals.
+- Event fit weights are applied as a pre-filter so the app doesn't suggest outfits that would be obviously inappropriate (e.g., a cocktail dress for the gym).
+- Weather uses Open-Meteo (no API key required) when the user grants location permission.
 
-Open `index.html` in any browser. That's it. To try it online without downloading anything, see the GitHub Pages link in the repo description (if enabled).
+Running locally
 
-## Issues I ran into
+Open app.html in any modern browser. The weather feature requests location permission; if denied, the app falls back to neutral weather scoring and still works.
 
-- **Deciding what "matches" actually means.** Color matching is subjective, and a naive approach (e.g. "only show exact same color") would have been both wrong and boring. I settled on analogous + complementary hue matching with a neutral exception, which is a simplified version of real color theory and produces reasonable-looking suggestions without needing a design background to implement.
-- **Avoiding nonsensical outfits.** Early versions could suggest a cocktail dress for the gym if the colors happened to match well. Adding the event-fit weighting as a filter *before* scoring (rather than just a tiebreaker) fixed this.
-- **Floating point noise in scores.** Raw match scores came out as things like `0.7820000000000001`. Rounded with `Math.round()` before display.
+Domain & GitHub Pages
 
-## Possible next steps
+I recommend the domain "atelierwardrobe.app" for a modern, app-focused feel. If you'd like I can add a CNAME file to the repo for that domain — you'll need to add the corresponding DNS records with your registrar to point it to GitHub Pages.
 
-- Let users upload a photo of each item instead of picking a flat color
-- Weather-aware suggestions (skip the wool coat in summer)
-- Outfit history, so it doesn't repeat the same combination two days running
+Possible next steps
+
+- Add social meta tags and an og:image for nicer sharing (done in the site).
+- Add a tiny assets folder with favicon and social image.
+- Create a LICENSE file and a short privacy policy for production readiness.
+
+License
+
+This repository is provided for demonstration and educational purposes. Feel free to fork and adapt.
